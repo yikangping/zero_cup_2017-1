@@ -22,5 +22,9 @@ class WJRdb{
             if(count($res)==1&&$needminsize)$res=$res[0];
         }return $res;
     }
+    function ask($opt,$arg,$condition,$sort)
+    {
+
+    }
 }
 ?>

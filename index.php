@@ -54,45 +54,49 @@ if($_SESSION['userid']&&time()-$_SESSION['time']<=900)
         foreach($articles as $article)
         {
             $article['time']=date("Y-m-d H:m:s",$article['time']);
+            $comments=$db->query("select * from comment where articleid='".$article['articleid']."' order by time",0);
 ?>
             <div class="block article" name=<?php echo "{$article['writer']}";?> id=<?php echo "part".$article['articleid'];?> style="display:none;">
                 <div class="block pointer" id=<?php echo "article".$article['articleid'];?> >
                     <p class="article_title"><?php echo $article['title'];?></p>
                     <p class="article_sub_title"><?php echo $article['time'];?> | 作者：<?php echo $article['writer'];?></p>
                     <p class="article_abstract"><?php echo $article['content'];?></p>
-                    <div class="article_btns">
-                        <button type="button" class="btn btn-info">评论(<?php echo $article['comments']?>)</button>
-                        <button type="button" class="btn btn-info">阅读原文</button>
-                    </div>
                     <div class="clearfix"></div>
                 </div>
-                <div class="block" id=<?php echo "response".$article['articleid'];?> style="display:none;">
+                <div class="block" id=<?php echo "response".$article['articleid'];?> style="display:none;" >
                     <p class="article_title">评论区</p>
+<?php
+                foreach($comments as $comment)
+                {
+                    $comment['time']=date("Y-m-d H:m:s",$comment['time']);
+?>
                     <div class="comment">
                         <img src="src/userpic.gif" class="comment_img">
-                        <p class="comment_time">2017-09-20 15:20:32</p>
-                        <p class="user_name">我是谁</p>
-                        <p class="comment_content">我认为这篇文章写得很好，你们认为呢？</p>
+                        <p class="comment_time"><?php echo $comment['time'];?></p>
+                        <p class="user_name"><?php echo $comment['writer'];?></p>
+                        <p class="comment_content"><?php echo $comment['content'];?></p>
                     </div>
-                    <div class="comment">
-                        <img src="src/userpic.gif" class="comment_img">
-                        <p class="comment_time">2017-09-20 15:32:10</p>
-                        <p class="user_name">李晓红</p>
-                        <p class="comment_content">我也要为这篇文章点赞。</p>
-                        </div>
+<?php
+                }
+?>
                 </div>
             </div>
 <?php
         }
 ?>
-            <div class="block" id="relresponse" style="display:none;">
-                <textarea rows="1" placeholder="元芳你怎么看？"></textarea>
-                <button class="btn btn-info" style="float:right;">发布</button>
+            <div class="block" id="response" style="display:none;">
+                <textarea rows="1" placeholder="元芳你怎么看？" id="rescontent"></textarea>
+                <button class="btn btn-info" style="float:right;" id="relresponse">发布</button>
             </div>
         </div>
         <div class="main-right">
-            <div class="block" style="display:block;">
-                <button class="btn btn-info" style="font-size:20px;width:100%;">点击签到</button>
+            <div class="block">
+                <button class="btn btn-info" style='font-size:20px;width:100%;' <?php echo $user['today']?"":"onclick='checkin();'"?> id="checkin">
+<?php
+                if($user['today'])echo "已签到".($user['days']+1)."天";
+                else echo "点击签到";
+?>
+                </button>
             </div>
             <div class="block">
                 <p style="font-size:22px;">好友列表</p>
