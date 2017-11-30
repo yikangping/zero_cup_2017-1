@@ -1,12 +1,12 @@
 function rand_next(){
-    $("#background").css("background","url('src/background"+String(Math.floor(Math.random()*33))+".jpg') no-repeat center center");
+    $("#background").css("background","url('src/background"+String(Math.floor(Math.random()*35))+".jpg') no-repeat center center");
     $("#background").fadeIn(500,
         function(){
             setInterval(
                 function(){
                     $("#background").fadeOut(500,
                         function(){
-                            $("#background").css("background","url('src/background"+String(Math.floor(Math.random()*33))+".jpg') no-repeat center center");
+                            $("#background").css("background","url('src/background"+String(Math.floor(Math.random()*35))+".jpg') no-repeat center center");
                             $("#background").fadeIn(500);
                         }
                     );

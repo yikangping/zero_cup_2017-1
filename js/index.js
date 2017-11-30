@@ -49,6 +49,7 @@ function get_article(username)
 }
 function relarticle()
 {
+    if($("#reltitle").val()==""||$("#relcontent").val()=="")return;
     $.post(
         "php/relarticle.php",
         {
@@ -57,7 +58,6 @@ function relarticle()
         },
         function(data)
         {
-            alert(data);
             $("#relessay").after(data);
             init();
         }
@@ -73,7 +73,6 @@ function relresponse(now)
         },
         function(data)
         {
-            alert(data);
             $("#response"+String(now)).append(data);
         }
     );

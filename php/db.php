@@ -1,6 +1,17 @@
 <?php
 session_start();
 date_default_timezone_set("PRC");
+function smkdir($path)
+{
+	$temp=explode('/',$path);
+	$p='';
+	$result=true;
+	foreach($temp as $value)
+	{
+		$p.=$value.'/';
+	    if(!is_dir($p)) $result=$result&&@mkdir($p);
+    }return $result;
+}
 class WJRdb{
     function connect()
     {

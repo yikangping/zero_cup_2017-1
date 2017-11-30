@@ -28,7 +28,6 @@ if($_SESSION['userid']&&time()-$_SESSION['time']<=900)
     <link type="text/css" href="css/index.css" rel="stylesheet">
     <link type="text/css" href="css/nav.css" rel="stylesheet">
     <link type="text/css" href="css/main-left.css" rel="stylesheet">
-    <link type="text/css" href="css/main-right.css" rel="stylesheet">
 </head>
 
 <body onload=<?php echo "init();rand_next();"?>>
@@ -46,8 +45,9 @@ if($_SESSION['userid']&&time()-$_SESSION['time']<=900)
         </nav>
         <div class="main-left">
             <div class="block" id="relessay">
-                <input placeholder="这里是标题" type="text" id="reltitle" style="width:100%;border-radius:10px;padding:6px;font-size:16px;margin-bottom:6px;"/>
-                <textarea rows="5" id="relcontent" placeholder="说出你的故事 #话题#放在前面 回车分段 走起"></textarea>
+                <input placeholder="这里是标题" required type="text" id="reltitle" style="width:100%;border-radius:10px;padding:6px;font-size:16px;margin-bottom:6px;"/>
+                <textarea rows="5" id="relcontent" required placeholder="说出你的故事 #话题#放在前面 回车分段 走起"></textarea>
+                <input type="file" multiple class="btn btn-info" id="files" style="width:100%;margin-bottom:10px;" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
                 <button class="btn btn-info" style="float:right;" onclick="relarticle();">发布</button>
             </div>
 <?php
@@ -55,12 +55,24 @@ if($_SESSION['userid']&&time()-$_SESSION['time']<=900)
         {
             $article['time']=date("Y-m-d H:m:s",$article['time']);
             $comments=$db->query("select * from comment where articleid='".$article['articleid']."' order by time",0);
+            $pics=$db->query("select * from pic where articleid='".$article['articleid']."'",0);
+            $cnt=min(array(intval(sqrt(count($pics)))+1,3));
 ?>
             <div class="block article" name=<?php echo "{$article['writer']}";?> id=<?php echo "part".$article['articleid'];?> style="display:none;">
                 <div class="block pointer" id=<?php echo "article".$article['articleid'];?> >
                     <p class="article_title"><?php echo $article['title'];?></p>
                     <p class="article_sub_title"><?php echo $article['time'];?> | 作者：<?php echo $article['writer'];?></p>
                     <p class="article_abstract"><?php echo $article['content'];?></p>
+                    <div class="article_img">
+<?php
+                    foreach($pics as $pic)
+                    {
+?>
+                        <div <?php echo "class='img_".$cnt."' style='background:url(".$pic['path'].") no-repeat transparent center'";?>></div>
+<?php
+                    }
+?>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="block" id=<?php echo "response".$article['articleid'];?> style="display:none;" >
